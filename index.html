@@ -281,6 +281,93 @@
             .widget {
                 max-height: 400px;
             }
+
+            .tech-highlights {
+                grid-template-columns: 1fr;
+            }
+
+            .project-overview {
+                padding: 20px;
+            }
+        }
+
+        /* Project Overview Styles */
+        .project-overview {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .overview-content h2 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .overview-content p {
+            color: #2d3748;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .tech-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .tech-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .tech-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .tech-item strong {
+            color: #2d3748;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .tech-item p {
+            color: #4a5568;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .data-notice {
+            background: linear-gradient(135deg, #fed7d7, #feb2b2);
+            padding: 15px 20px;
+            border-radius: 10px;
+            color: #742a2a;
+            margin: 20px 0;
+            border-left: 4px solid #e53e3e;
+        }
+
+        .skills-demo {
+            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+            padding: 15px 20px;
+            border-radius: 10px;
+            color: #22543d;
+            border-left: 4px solid #38a169;
+            font-weight: 500;
         }
 
         footer {
@@ -298,6 +385,47 @@
             <div class="subtitle">Interactive Data Visualization & Real-time Analytics</div>
             <div class="author">Built by Sinothabo Zwane | Data Scientist & Frontend Developer</div>
         </header>
+
+        <!-- Project Overview Section -->
+        <div class="project-overview">
+            <div class="overview-content">
+                <h2>📋 Project Overview</h2>
+                <p><strong>Purpose:</strong> This dashboard is a frontend development portfolio project designed to demonstrate my technical skills in building interactive data visualization interfaces.</p>
+                
+                <div class="tech-highlights">
+                    <div class="tech-item">
+                        <span class="tech-icon">💻</span>
+                        <div>
+                            <strong>Frontend Technologies:</strong>
+                            <p>HTML5, CSS3, JavaScript ES6+, Chart.js, Responsive Design, CSS Grid & Flexbox</p>
+                        </div>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-icon">📊</span>
+                        <div>
+                            <strong>Data Visualization:</strong>
+                            <p>Multiple chart types, real-time updates, interactive controls, dynamic data filtering</p>
+                        </div>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-icon">🎨</span>
+                        <div>
+                            <strong>UI/UX Design:</strong>
+                            <p>Modern glassmorphism effects, smooth animations, mobile-responsive layout</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="data-notice">
+                    <strong>⚠️ Important Note:</strong> All data displayed is simulated/generated for demonstration purposes. 
+                    In a production environment, this would connect to real APIs, databases, and analytics services.
+                </div>
+                
+                <div class="skills-demo">
+                    <strong>Skills Demonstrated:</strong> Frontend Development • Data Visualization • Interactive UI Components • Responsive Design • JavaScript DOM Manipulation • Chart.js Integration
+                </div>
+            </div>
+        </div>
 
         <div class="dashboard-grid">
             <!-- KPI Overview -->
