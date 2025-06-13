@@ -65,6 +65,10 @@
             border: 1px solid rgba(255,255,255,0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             animation: fadeInUp 0.6s ease-out;
+            /* FIX: Add max height and proper overflow handling */
+            max-height: 500px;
+            display: flex;
+            flex-direction: column;
         }
 
         .widget:hover {
@@ -79,6 +83,8 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            /* FIX: Prevent header from shrinking */
+            flex-shrink: 0;
         }
 
         .icon {
@@ -98,6 +104,8 @@
             gap: 15px;
             margin-bottom: 20px;
             flex-wrap: wrap;
+            /* FIX: Prevent controls from shrinking */
+            flex-shrink: 0;
         }
 
         .btn {
@@ -142,6 +150,8 @@
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 15px;
             margin-bottom: 20px;
+            /* FIX: Prevent stats from shrinking */
+            flex-shrink: 0;
         }
 
         .stat-card {
@@ -166,14 +176,34 @@
 
         .chart-container {
             position: relative;
-            height: 300px;
+            /* FIX: Use flexible height instead of fixed height */
+            height: 250px;
             margin-top: 20px;
+            /* FIX: Allow container to grow and shrink */
+            flex: 1;
+            min-height: 200px;
+        }
+
+        /* FIX: Special handling for canvas elements */
+        .chart-container canvas {
+            max-height: 100% !important;
         }
 
         .data-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            /* FIX: Add scroll container for table */
+            display: block;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .data-table thead,
+        .data-table tbody {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
         }
 
         .data-table th,
@@ -187,6 +217,8 @@
             background: linear-gradient(135deg, #f7fafc, #edf2f7);
             font-weight: 600;
             color: #2d3748;
+            position: sticky;
+            top: 0;
         }
 
         .data-table tr:hover {
@@ -208,6 +240,14 @@
             height: 30px;
             animation: spin 1s linear infinite;
             margin: 0 auto 10px;
+        }
+
+        /* FIX: Specific widget content containers */
+        .widget-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
         @keyframes spin {
@@ -237,6 +277,10 @@
             .controls {
                 flex-direction: column;
             }
+
+            .widget {
+                max-height: 400px;
+            }
         }
 
         footer {
@@ -259,124 +303,138 @@
             <!-- KPI Overview -->
             <div class="widget">
                 <h3><span class="icon">📊</span>Key Performance Indicators</h3>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-value" id="totalUsers">2,847</div>
-                        <div class="stat-label">Total Users</div>
+                <div class="widget-content">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalUsers">2,847</div>
+                            <div class="stat-label">Total Users</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="conversionRate">12.4%</div>
+                            <div class="stat-label">Conversion</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="revenue">$84.2K</div>
+                            <div class="stat-label">Revenue</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="accuracy">94.7%</div>
+                            <div class="stat-label">AI Accuracy</div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="conversionRate">12.4%</div>
-                        <div class="stat-label">Conversion</div>
+                    <div class="controls">
+                        <button class="btn" onclick="refreshKPIs()">Refresh Data</button>
+                        <button class="btn secondary" onclick="exportData()">Export</button>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="revenue">$84.2K</div>
-                        <div class="stat-label">Revenue</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="accuracy">94.7%</div>
-                        <div class="stat-label">AI Accuracy</div>
-                    </div>
-                </div>
-                <div class="controls">
-                    <button class="btn" onclick="refreshKPIs()">Refresh Data</button>
-                    <button class="btn secondary" onclick="exportData()">Export</button>
                 </div>
             </div>
 
             <!-- Interactive Chart -->
             <div class="widget">
                 <h3><span class="icon">📈</span>Performance Trends</h3>
-                <div class="controls">
-                    <select id="chartType" onchange="updateChart()">
-                        <option value="line">Line Chart</option>
-                        <option value="bar">Bar Chart</option>
-                        <option value="radar">Radar Chart</option>
-                    </select>
-                    <select id="timeRange" onchange="updateChart()">
-                        <option value="7">Last 7 Days</option>
-                        <option value="30">Last 30 Days</option>
-                        <option value="90">Last 90 Days</option>
-                    </select>
-                    <button class="btn" onclick="randomizeData()">Generate New Data</button>
+                <div class="widget-content">
+                    <div class="controls">
+                        <select id="chartType" onchange="updateChart()">
+                            <option value="line">Line Chart</option>
+                            <option value="bar">Bar Chart</option>
+                            <option value="radar">Radar Chart</option>
+                        </select>
+                        <select id="timeRange" onchange="updateChart()">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30">Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                        </select>
+                        <button class="btn" onclick="randomizeData()">Generate New Data</button>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
                 </div>
-                <canvas id="performanceChart"></canvas>
             </div>
 
             <!-- ML Model Performance -->
             <div class="widget">
                 <h3><span class="icon">🤖</span>ML Model Performance</h3>
-                <div class="chart-container">
-                    <canvas id="mlChart"></canvas>
-                </div>
-                <div class="controls">
-                    <input type="range" id="thresholdSlider" min="0" max="100" value="75" oninput="updateThreshold(this.value)">
-                    <label>Threshold: <span id="thresholdValue">75%</span></label>
+                <div class="widget-content">
+                    <div class="chart-container">
+                        <canvas id="mlChart"></canvas>
+                    </div>
+                    <div class="controls">
+                        <input type="range" id="thresholdSlider" min="0" max="100" value="75" oninput="updateThreshold(this.value)">
+                        <label>Threshold: <span id="thresholdValue">75%</span></label>
+                    </div>
                 </div>
             </div>
 
             <!-- Real-time Data Feed -->
             <div class="widget">
                 <h3><span class="icon">⚡</span>Real-time Data Feed</h3>
-                <div class="loading" id="loadingIndicator">
-                    <div class="spinner"></div>
-                    <div>Loading real-time data...</div>
-                </div>
-                <table class="data-table" id="dataTable">
-                    <thead>
-                        <tr>
-                            <th>Timestamp</th>
-                            <th>User ID</th>
-                            <th>Action</th>
-                            <th>Score</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="dataTableBody">
-                    </tbody>
-                </table>
-                <div class="controls">
-                    <button class="btn" onclick="startRealTimeData()">Start Feed</button>
-                    <button class="btn danger" onclick="stopRealTimeData()">Stop Feed</button>
-                    <button class="btn secondary" onclick="clearData()">Clear Data</button>
+                <div class="widget-content">
+                    <div class="loading" id="loadingIndicator">
+                        <div class="spinner"></div>
+                        <div>Loading real-time data...</div>
+                    </div>
+                    <table class="data-table" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>User ID</th>
+                                <th>Action</th>
+                                <th>Score</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTableBody">
+                        </tbody>
+                    </table>
+                    <div class="controls">
+                        <button class="btn" onclick="startRealTimeData()">Start Feed</button>
+                        <button class="btn danger" onclick="stopRealTimeData()">Stop Feed</button>
+                        <button class="btn secondary" onclick="clearData()">Clear Data</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Interactive Filters -->
             <div class="widget">
                 <h3><span class="icon">🔍</span>Advanced Filters</h3>
-                <div class="controls">
-                    <input type="date" id="startDate" onchange="applyFilters()">
-                    <input type="date" id="endDate" onchange="applyFilters()">
-                    <select id="categoryFilter" onchange="applyFilters()">
-                        <option value="all">All Categories</option>
-                        <option value="sales">Sales</option>
-                        <option value="marketing">Marketing</option>
-                        <option value="support">Support</option>
-                    </select>
-                </div>
-                <div class="chart-container">
-                    <canvas id="filteredChart"></canvas>
+                <div class="widget-content">
+                    <div class="controls">
+                        <input type="date" id="startDate" onchange="applyFilters()">
+                        <input type="date" id="endDate" onchange="applyFilters()">
+                        <select id="categoryFilter" onchange="applyFilters()">
+                            <option value="all">All Categories</option>
+                            <option value="sales">Sales</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="support">Support</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="filteredChart"></canvas>
+                    </div>
                 </div>
             </div>
 
             <!-- Predictive Analytics -->
             <div class="widget">
                 <h3><span class="icon">🔮</span>Predictive Analytics</h3>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-value" id="nextWeekPrediction">+15.3%</div>
-                        <div class="stat-label">Next Week Growth</div>
+                <div class="widget-content">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="nextWeekPrediction">+15.3%</div>
+                            <div class="stat-label">Next Week Growth</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="riskScore">Low</div>
+                            <div class="stat-label">Risk Level</div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="riskScore">Low</div>
-                        <div class="stat-label">Risk Level</div>
+                    <div class="chart-container">
+                        <canvas id="predictionChart"></canvas>
                     </div>
-                </div>
-                <div class="chart-container">
-                    <canvas id="predictionChart"></canvas>
-                </div>
-                <div class="controls">
-                    <button class="btn" onclick="runPrediction()">Run Prediction Model</button>
+                    <div class="controls">
+                        <button class="btn" onclick="runPrediction()">Run Prediction Model</button>
+                    </div>
                 </div>
             </div>
         </div>
